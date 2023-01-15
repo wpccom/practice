@@ -125,12 +125,31 @@ var app = http.createServer(function (request, response) {
                 <p><input type="submit"></p>
                 </form>
                 `
-                , "update 모드입니다."
+                    , "update 모드입니다."
                 );
                 response.writeHead(200);
                 response.end(template);
             });
 
+        });
+    } else if (pathname === '/update_process') {
+        var body = '';
+        request.on('data', function (data) {
+            body += data;
+        });
+        request.on('end', function () {
+            var post = qs.parse(body);
+            var id = post.id;
+            var title = post.title;
+            var description = post.description;
+            console.log(`${id}, ${title}, ${description}`);
+            /*
+            fs.writeFile(`data/${title}`, description, 'utf8', function (err) {
+                console.log(`File saved.`)
+                response.writeHead(302, { Location: `/?id=${title}` });
+                response.end();
+                
+            })*/
         });
     } else {
         response.writeHead(404);
